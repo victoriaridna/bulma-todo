@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Field, Control, Input } from 'react-bulma-components/lib/components/form';
-import {connect} from 'react-redux';
-import {addTodo} from '../actions';
-import {Button, Icon} from 'react-bulma-components/src';
+import {Icon} from 'react-bulma-components/src';
 
 class TodoInput extends Component {
 	state = {
@@ -11,7 +9,9 @@ class TodoInput extends Component {
 
 	handleSubmit = e => {
 		if (e.which === 13) {
-			this.state.todo && addTodo(this.state.todo);
+			if(this.state.todo.length){
+				this.props.addTodo(this.state.todo);
+			}
 			this.setState({ todo: '' });
 		}
 	};
@@ -19,10 +19,6 @@ class TodoInput extends Component {
 	handleChange = e => {
 		this.setState({ todo: e.target.value });
 	};
-
-	handleButtonTapped = e => {
-		this.props.onSave(this.state.todo)
-	}
 
 	render() {
 		return (
@@ -36,11 +32,11 @@ class TodoInput extends Component {
 							onChange={this.handleChange}
 							onKeyDown={this.handleSubmit}
 						/>
-						<Icon align="right" icon="add" color="info"/>
+						<Icon align="right" icon="angle-down" color="info"/>
 					</Control>
 				</Field>
 		);
 	}
 }
 
-export default connect(null, {addTodo})(TodoInput)
+export default TodoInput;
